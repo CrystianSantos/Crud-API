@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda de Contatos</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Agenda de Contatos</h1>
+
+    <!-- Formulário de Cadastro -->
+    <form id="form-contato">
+      <input type="text" id="nome" placeholder="Nome" required />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="tel" id="telefone" placeholder="Telefone" />
+      <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Tabela de Listagem -->
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-contatos">
+        <!-- Linhas serão inseridas via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="./js/main.js"></script> <!-- Será feito na Parte 5 -->
+</body>
+</html>
