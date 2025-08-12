@@ -10,10 +10,9 @@ let idEditando = null; // Para controlar se está editando
 async function carregarContatos() {
   try {
     const resposta = await fetch(`${API_BASE_URL}/contatos`);
-    if (!resposta.ok) throw new Error('Erro ao buscar contatos');
     const contatos = await resposta.json();
 
-    tabela.innerHTML = ''; // limpa só o tbody, mantendo o thead
+    tabela.innerHTML = '';
 
     contatos.forEach(contato => {
       const linha = document.createElement('tr');
@@ -23,14 +22,10 @@ async function carregarContatos() {
         <td>${contato.email || ''}</td>
         <td>${contato.telefone || ''}</td>
         <td>
-          <button class="editar">Editar</button>
-          <button class="excluir">Excluir</button>
+          <button class="editar" onclick="editarContato('${contato._id}')">Editar</button>
+          <button class="excluir" onclick="excluirContato('${contato._id}')">Excluir</button>
         </td>
       `;
-
-      // Adiciona eventos nos botões
-      linha.querySelector('.editar').addEventListener('click', () => editarContato(contato._id));
-      linha.querySelector('.excluir').addEventListener('click', () => excluirContato(contato._id));
 
       tabela.appendChild(linha);
     });
@@ -71,12 +66,8 @@ form.addEventListener('submit', async (e) => {
     }
 
     if (!resposta.ok) {
-      let erroMsg = 'Erro desconhecido';
-      try {
-        const erro = await resposta.json();
-        erroMsg = erro.mensagem || erroMsg;
-      } catch {}
-      throw new Error(erroMsg);
+      const erro = await resposta.json();
+      throw new Error(erro.mensagem || 'Erro desconhecido');
     }
 
     alert(idEditando ? 'Contato atualizado!' : 'Contato criado!');
@@ -110,16 +101,18 @@ async function excluirContato(id) {
 // Editar contato
 async function editarContato(id) {
   try {
-    const resposta = await fetch(`${API_BASE_URL}/contatos/${id}`);
-    if (!resposta.ok) {
+    const resposta = await fetch(`${API_BASE_URL}/contatos`);
+    const contatos = await resposta.json();
+
+    const contato = contatos.find(c => c._id === id);
+    if (!contato) {
       alert('Contato não encontrado');
       return;
     }
-    const contato = await resposta.json();
 
-    document.getElementById('nome').value = contato.nome || '';
-    document.getElementById('email').value = contato.email || '';
-    document.getElementById('telefone').value = contato.telefone || '';
+    document.getElementById('nome').value = contato.nome;
+    document.getElementById('email').value = contato.email;
+    document.getElementById('telefone').value = contato.telefone;
 
     idEditando = id;
 
@@ -127,9 +120,7 @@ async function editarContato(id) {
     alert('Erro ao buscar contato para editar: ' + error.message);
   }
 }
-
 window.editarContato = editarContato;
 window.excluirContato = excluirContato;
-
 // Inicializar lista
 carregarContatos();
