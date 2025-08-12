@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://crud-api-rfl7.onrender.com/api/contatos';
+const API_BASE_URL = 'https://crud-api-rfl7.onrender.com/api';
 
 // Elementos DOM
 const form = document.getElementById('form-contato');
